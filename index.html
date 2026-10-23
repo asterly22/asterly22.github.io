@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Точное время в городах России</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --accent-color: #2563eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      margin: 0 0 10px 0;
+      color: #0f172a;
+    }
+
+    .today-date {
+      font-size: 1.2rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .search-box {
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-box input {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .cities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .city-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .city-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .city-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1e293b;
+    }
+
+    .city-offset {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .city-time {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    @media (max-width: 480px) {
+      .cities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Точное время в городах России</h1>
+      <div class="today-date" id="todayDate">Загрузка даты...</div>
+    </header>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Поиск города..." oninput="filterCities()">
+    </div>
+
+    <div class="cities-grid" id="citiesContainer">
+      <!-- Список городов будет сгенерирован автоматически -->
+    </div>
+  </div>
+
+  <script>
+    // Список крупных городов России и их часовые пояса (IANA Timezones)
+    const citiesData = [
+      { name: "Абакан", zone: "Asia/Krasnoyarsk", offset: "MSK+4" },
+      { name: "Анадырь", zone: "Asia/Anadyr", offset: "MSK+9" },
+      { name: "Архангельск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Астрахань", zone: "Europe/Astrakhan", offset: "MSK+1" },
+      { name: "Барнаул", zone: "Asia/Barnaul", offset: "MSK+4" },
+      { name: "Белгород", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Благовещенск", zone: "Asia/Yakutsk", offset: "MSK+6" },
+      { name: "Брянск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Владивосток", zone: "Asia/Vladivostok", offset: "MSK+7" },
+      { name: "Владикавказ", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Владимир", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Волгоград", zone: "Europe/Volgograd", offset: "MSK" },
+      { name: "Вологда", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Воронеж", zone: "Europe/Moscow", offset: "MSK" },
+
+{ name: "Воткинск", zone: "Europe/Samara", offset: "MSK+1" },
+      { name: "Грозный", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Екатеринбург", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Иваново", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Ижевск", zone: "Europe/Samara", offset: "MSK+1" },
+      { name: "Иркутск", zone: "Asia/Irkutsk", offset: "MSK+5" },
+      { name: "Йошкар-Ола", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Казань", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Калининград", zone: "Europe/Kaliningrad", offset: "MSK-1" },
+      { name: "Калуга", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Кемерово", zone: "Asia/Kemerovo", offset: "MSK+4" },
+      { name: "Киров", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Кострома", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Краснодар", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Красноярск", zone: "Asia/Krasnoyarsk", offset: "MSK+4" },
+      { name: "Курган", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Курск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Липецк", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Магадан", zone: "Asia/Magadan", offset: "MSK+8" },
+      { name: "Махачкала", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Москва", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Мурманск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Набережные Челны", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Нижний Новгород", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Новокузнецк", zone: "Asia/Novokuznetsk", offset: "MSK+4" },
+      { name: "Новороссийск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Новосибирск", zone: "Asia/Novosibirsk", offset: "MSK+4" },
+      { name: "Омск", zone: "Asia/Omsk", offset: "MSK+3" },
+      { name: "Орел", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Оренбург", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Пенза", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Пермь", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Петрозаводск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Петропавловск-Камчатский", zone: "Asia/Kamchatka", offset: "MSK+9" },
+      { name: "Псков", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Ростов-на-Дону", zone: "Europe/Rostov-on-Don", offset: "MSK" },
+      { name: "Рязань", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Самара", zone: "Europe/Samara", offset: "MSK+1" },
+      { name: "Санкт-Петербург", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Саранск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Саратов", zone: "Europe/Saratov", offset: "MSK+1" },
+      { name: "Севастополь", zone: "Europe/Simferopol", offset: "MSK" },
+      { name: "Симферополь", zone: "Europe/Simferopol", offset: "MSK" },
+      { name: "Смоленск", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Сочи", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Ставрополь", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Сургут", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Тамбов", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Тверь", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Томск", zone: "Asia/Tomsk", offset: "MSK+4" },
+      { name: "Тула", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Тюмень", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Улан-Удэ", zone: "Asia/Irkutsk", offset: "MSK+5" },
+      { name: "Ульяновск", zone: "Europe/Ulyanovsk", offset: "MSK+1" },
+      { name: "Уфа", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Хабаровск", zone: "Asia/Vladivostok", offset: "MSK+7" },
+
+{ name: "Ханты-Мансийск", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Чебоксары", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Челябинск", zone: "Asia/Yekaterinburg", offset: "MSK+2" },
+      { name: "Череповец", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Чита", zone: "Asia/Chita", offset: "MSK+6" },
+      { name: "Элиста", zone: "Europe/Moscow", offset: "MSK" },
+      { name: "Южно-Сахалинск", zone: "Asia/Sakhalin", offset: "MSK+8" },
+      { name: "Якутск", zone: "Asia/Yakutsk", offset: "MSK+6" },
+      { name: "Ярославль", zone: "Europe/Moscow", offset: "MSK" }
+    ];
+
+    // 1. Сортировка городов строго по алфавиту
+    citiesData.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+
+    // 2. Отображение сегодняшней даты
+    function updateDate() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      const formattedDate = now.toLocaleDateString('ru-RU', options);
+      document.getElementById('todayDate').innerText = Сегодня: ${formattedDate};
+    }
+
+    // 3. Создание карточек городов в HTML
+    const container = document.getElementById('citiesContainer');
+    citiesData.forEach((city, index) => {
+      const card = document.createElement('div');
+      card.className = 'city-card';
+      card.dataset.name = city.name.toLowerCase();
+      card.innerHTML = 
+        <div class="city-info">
+          <span class="city-name">${city.name}</span>
+          <span class="city-offset">${city.offset}</span>
+        </div>
+        <div class="city-time" id="time-${index}">--:--:--</div>
+      ;
+      container.appendChild(card);
+    });
+
+    // 4. Обновление времени во всех городах
+    function updateClocks() {
+      const now = new Date();
+      citiesData.forEach((city, index) => {
+        try {
+          const timeString = now.toLocaleTimeString('ru-RU', {
+            timeZone: city.zone,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          document.getElementById(time-${index}).innerText = timeString;
+        } catch (e) {
+          document.getElementById(time-${index}).innerText = "Ошибка";
+        }
+      });
+    }
+
+    // 5. Фильтрация по поиску
+    function filterCities() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.city-card');
+      cards.forEach(card => {
+        const name = card.dataset.name;
+        if (name.includes(query)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    // Запуск
+    updateDate();
+    updateClocks();
+    setInterval(updateClocks, 1000); // Обновление каждую секунду
+  </script>
+</body>
+</html>
