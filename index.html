@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Воткинск — Королевский город времени России</title>
+
+    <meta name="description"
+          content="Воткинск — главный город времени! Текущая дата и время в городах России.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #090d19;
+            --card: #151d32;
+            --card-hover: #202b46;
+            --text: #f5f7ff;
+            --muted: #9ba9c7;
+            --accent: #6c8cff;
+            --gold: #ffd875;
+            --gold-light: #fff0b3;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px 35px;
+            background:
+                radial-gradient(
+                    ellipse at top,
+                    rgba(65, 103, 220, 0.25),
+                    transparent 70%
+                );
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: #b9c8ff;
+            background: rgba(108, 140, 255, 0.1);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(30px, 5vw, 48px);
+            line-height: 1.15;
+            margin-bottom: 15px;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* КОРОЛЕВСКИЙ ВОТКИНСК */
+
+        .royal-section {
+            max-width: 1000px;
+            margin: 40px auto 30px;
+            padding: 0 20px;
+        }
+
+        .royal-card {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 42px 25px;
+            border-radius: 28px;
+            border: 2px solid rgba(255, 215, 117, 0.8);
+
+            background:
+                radial-gradient(
+                    ellipse at top,
+                    rgba(255, 215, 117, 0.20),
+                    transparent 65%
+                ),
+                linear-gradient(
+                    135deg,
+                    #211b13,
+                    #171627 55%,
+                    #292012
+                );
+
+            box-shadow:
+                0 0 30px rgba(255, 199, 76, 0.12),
+                0 0 80px rgba(255, 199, 76, 0.06),
+                inset 0 0 35px rgba(255, 215, 117, 0.04);
+        }
+
+        .royal-card::before {
+            content: "♛";
+            position: absolute;
+            top: -65px;
+            left: -30px;
+            font-size: 190px;
+            color: rgba(255, 215, 117, 0.035);
+            pointer-events: none;
+        }
+
+        .royal-card::after {
+            content: "♛";
+            position: absolute;
+            bottom: -90px;
+            right: -20px;
+            font-size: 220px;
+            color: rgba(255, 215, 117, 0.035);
+            pointer-events: none;
+        }
+
+        .royal-crown {
+            font-size: 65px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 18px rgba(255, 215, 117, 0.5));
+            animation: crownFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes crownFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        .royal-label {
+            display: inline-block;
+            padding: 8px 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 215, 117, 0.4);
+            border-radius: 30px;
+            background: rgba(255, 215, 117, 0.08);
+            color: var(--gold-light);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .royal-title {
+            color: var(--gold);
+            font-size: clamp(38px, 7vw, 72px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 25px rgba(255, 215, 117, 0.2);
+        }
+
+        .royal-subtitle {
+            color: var(--gold-light);
+            font-size: clamp(16px, 3vw, 22px);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .royal-description {
+            max-width: 600px;
+            margin: 0 auto 25px;
+            color: #d1c6a9;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .royal-time {
+            font-size: clamp(48px, 10vw, 86px);
+            font-weight: 900;
+            color: #fff4cc;
+            letter-spacing: 3px;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 30px rgba(255, 215, 117, 0.2);
+        }
+
+        .royal-date {
+            color: var(--gold);
+            font-size: clamp(15px, 3vw, 20px);
+            margin-top: 15px;
+            line-height: 1.7;
+        }
+
+        .royal-zone {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: rgba(255, 215, 117, 0.09);
+            color: var(--gold-light);
+            font-size: 13px;
+        }
+
+        /* ЮСА, ПРИВЕТ */
+
+        .usa-greeting {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            margin-top: 24px;
+            padding: 28px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #172957,
+                    #261b43,
+                    #481f35
+                );
+
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .usa-small {
+            color: #c4d4ff;
+            font-size: 13px;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .usa-title {
+            color: white;
+            font-size: clamp(34px, 7vw, 65px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 25px rgba(120, 155, 255, 0.5);
+            animation: greetingGlow 3s ease-in-out infinite;
+        }
+
+        .usa-description {
+            margin-top: 12px;
+            color: #d5dcff;
+            font-size: 15px;
+        }
+
+        @keyframes greetingGlow {
+            0%, 100% {
+                text-shadow: 0 0 15px rgba(120, 155, 255, 0.25);
+            }
+
+            50% {
+                text-shadow: 0 0 35px rgba(120, 155, 255, 0.8);
+            }
+        }
+
+        /* МОСКВА */
+
+        .main-clock {
+            max-width: 550px;
+            margin: 35px auto 0;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(21, 29, 50, 0.8);
+        }
+
+        .main-clock .label {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .main-time {
+            font-size: clamp(38px, 8vw, 60px);
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .main-date {
+            color: #b9c8ff;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        /* ГОРОДА */
+
+        .container {
+            width: min(1200px, 100%);
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 25px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar h2 {
+            font-size: 24px;
+        }
+
+        .search {
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search input:focus {
+            border-color: var(--accent);
+        }
+
+        .search input::placeholder {
+            color: var(--muted);
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .stat strong {
+            color: var(--text);
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .city-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: transform 0.2s, background 0.2s;
+            min-width: 0;
+        }
+
+        .city-card:hover {
+            transform: translateY(-3px);
+            background: var(--card-hover);
+        }
+
+        .city-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .city-name {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .city-region {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .utc {
+            white-space: nowrap;
+            background: rgba(108, 140, 255, 0.12);
+            color: #b9c8ff;
+            border-radius: 7px;
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .city-time {
+            font-size: clamp(26px, 3vw, 34px);
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 10px;
+        }
+
+        .city-date {
+            font-size: 14px;
+            color: #b9c8ff;
+            line-height: 1.5;
+        }
+
+        .city-zone {
+            margin-top: 16px;
+            padding-top: 13px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            padding: 50px 20px;
+            text-align: center;
+            color: var(--muted);
+            background: var(--card);
+            border-radius: 16px;
+        }
+
+        footer {
+            padding: 35px 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 900px) {
+            .city-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 560px) {
+            header {
+                padding-top: 35px;
+            }
+
+            .city-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                align-items: stretch;
+            }
+
+            .search {
+                max-width: none;
+            }
+
+            .city-card {
+                padding: 20px;
+            }
+
+            .royal-card {
+                padding: 32px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="badge">🇷🇺 Часовые пояса России</div>
+
+    <h1>Время <span>в России</span></h1>
+
+    <p class="subtitle">
+        От Калининграда до Камчатки — следим за временем
+        во всех уголках нашей огромной страны.
+    </p>
+
+    <!-- КОРОЛЕВСКИЙ ВОТКИНСК -->
+    <section class="royal-section">
+
+        <div class="royal-card">
+
+            <div class="royal-crown">👑</div>
+
+            <div class="royal-label">
+                ★ Главный город сайта ★
+            </div>
+
+            <h2 class="royal-title">ВОТКИНСК</h2>
+
+            <p class="royal-subtitle">
+                Королевский город. Лучший в мире.
+            </p>
+
+            <p class="royal-description">
+                Здесь время имеет королевский статус.
+                Пока остальные города просто смотрят на часы,
+                Воткинск задаёт стиль всей России!
+                Да здравствует великий Воткинск! 👑
+            </p>
+
+            <div class="royal-time" id="votkinskTime">
+                --:--:--
+            </div>
+
+            <div class="royal-date" id="votkinskDate">
+                Загрузка даты...
+            </div>
+
+            <div class="royal-zone" id="votkinskZone">
+                Часовой пояс: UTC+04:00
+            </div>
+
+        </div>
+
+        <!-- ЗАМЕТНОЕ ПРИВЕТСТВИЕ -->
+        <div class="usa-greeting">
+
+            <div class="usa-small">
+                ОСОБОЕ ПОСЛАНИЕ ОТ КОРОЛЕВСКОГО ВОТКИНСКА
+            </div>
+
+            <div class="usa-title">
+                🇺🇸 ЮСА, ПРИВЕТ! 🇺🇸
+            </div>
+
+            <p class="usa-description">
+                Передаём привет от самого легендарного города России! 👑
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- МОСКОВСКИЕ ЧАСЫ -->
+    <div class="main-clock">
+        <div class="label">Москва · Московское время</div>
+        <div class="main-time" id="moscowTime">--:--:--</div>
+        <div class="main-date" id="moscowDate">Загрузка даты...</div>
+    </div>
+
+</header>
+
+<main class="container">
+
+    <div class="toolbar">
+        <h2>Города России</h2>
+
+        <div class="search">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="🔎 Найти город..."
+                aria-label="Поиск города"
+            >
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            Городов: <strong id="cityCount">0</strong>
+        </div>
+
+        <div class="stat">
+            Часовых поясов: <strong>11</strong>
+        </div>
+
+        <div class="stat">
+            Обновление: <strong>каждую секунду</strong>
+        </div>
+    </div>
+
+    <section
+        class="city-grid"
+        id="cityGrid"
+        aria-label="Текущее время в городах России"
+    ></section>
+
+</main>
+
+<footer>
+    <p>👑 Официальное время королевского Воткинска обновляется каждую секунду.</p>
+    <p>Время рассчитывается по часовым поясам браузера.</p>
+    <p>Воткинск — король сайта. Остальные города тоже прекрасны. 🇷🇺</p>
+</footer>
+
+<script>
+    // Воткинск находится в Удмуртии.
+    // Его часовой пояс — Europe/Samara (UTC+04:00).
+    const VOTKINSK_ZONE = "Europe/Samara";
+
+    // Города России и их часовые пояса.
+    const cities = [
+        {
+            name: "Калининград",
+            region: "Калининградская область",
+            zone: "Europe/Kaliningrad"
+        },
+        {
+            name: "Санкт-Петербург",
+            region: "Северо-Западный федеральный округ",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Москва",
+            region: "Центральный федеральный округ",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Мурманск",
+            region: "Мурманская область",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Архангельск",
+            region: "Архангельская область",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Воронеж",
+            region: "Воронежская область",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Краснодар",
+            region: "Краснодарский край",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Сочи",
+            region: "Краснодарский край",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Ростов-на-Дону",
+            region: "Ростовская область",
+            zone: "Europe/Moscow"
+        },
+        {
+            name: "Волгоград",
+            region: "Волгоградская область",
+            zone: "Europe/Volgograd"
+        },
+        {
+            name: "Самара",
+            region: "Самарская область",
+            zone: "Europe/Samara"
+        },
+        {
+            name: "Воткинск",
+            region: "Удмуртская Республика",
+            zone: "Europe/Samara"
+        },
+        {
+            name: "Ижевск",
+            region: "Удмуртская Республика",
+            zone: "Europe/Samara"
+        },
+        {
+            name: "Уфа",
+            region: "Республика Башкортостан",
+            zone: "Asia/Yekaterinburg"
+        },
+        {
+            name: "Екатеринбург",
+            region: "Свердловская область",
+            zone: "Asia/Yekaterinburg"
+        },
+        {
+            name: "Пермь",
+            region: "Пермский край",
+            zone: "Asia/Yekaterinburg"
+        },
+        {
+            name: "Челябинск",
+            region: "Челябинская область",
+            zone: "Asia/Yekaterinburg"
+        },
+        {
+            name: "Тюмень",
+            region: "Тюменская область",
+            zone: "Asia/Yekaterinburg"
+        },
+        {
+            name: "Омск",
+            region: "Омская область",
+            zone: "Asia/Omsk"
+        },
+        {
+            name: "Новосибирск",
+            region: "Новосибирская область",
+            zone: "Asia/Novosibirsk"
+        },
+        {
+            name: "Томск",
+            region: "Томская область",
+            zone: "Asia/Tomsk"
+        },
+        {
+            name: "Барнаул",
+            region: "Алтайский край",
+            zone: "Asia/Barnaul"
+        },
+        {
+            name: "Кемерово",
+            region: "Кемеровская область",
+            zone: "Asia/Novokuznetsk"
+        },
+        {
+            name: "Красноярск",
+            region: "Красноярский край",
+            zone: "Asia/Krasnoyarsk"
+        },
+        {
+            name: "Норильск",
+            region: "Красноярский край",
+            zone: "Asia/Krasnoyarsk"
+        },
+        {
+            name: "Иркутск",
+            region: "Иркутская область",
+            zone: "Asia/Irkutsk"
+        },
+        {
+            name: "Улан-Удэ",
+            region: "Республика Бурятия",
+            zone: "Asia/Irkutsk"
+        },
+        {
+            name: "Чита",
+            region: "Забайкальский край",
+            zone: "Asia/Chita"
+        },
+        {
+            name: "Якутск",
+            region: "Республика Саха (Якутия)",
+            zone: "Asia/Yakutsk"
+        },
+        {
+            name: "Благовещенск",
+            region: "Амурская область",
+            zone: "Asia/Yakutsk"
+        },
+        {
+            name: "Хабаровск",
+            region: "Хабаровский край",
+            zone: "Asia/Vladivostok"
+        },
+        {
+            name: "Владивосток",
+            region: "Приморский край",
+            zone: "Asia/Vladivostok"
+        },
+        {
+            name: "Южно-Сахалинск",
+            region: "Сахалинская область",
+            zone: "Asia/Sakhalin"
+        },
+        {
+            name: "Магадан",
+            region: "Магаданская область",
+            zone: "Asia/Magadan"
+        },
+        {
+            name: "Петропавловск-Камчатский",
+            region: "Камчатский край",
+            zone: "Asia/Kamchatka"
+        },
+        {
+            name: "Анадырь",
+            region: "Чукотский автономный округ",
+            zone: "Asia/Anadyr"
+        }
+    ];
+
+    const grid = document.getElementById("cityGrid");
+    const searchInput = document.getElementById("searchInput");
+
+    const timeFormatters = new Map();
+    const dateFormatters = new Map();
+
+    // Форматирование времени для часового пояса.
+    function getTimeFormatter(zone) {
+        if (!timeFormatters.has(zone)) {
+            timeFormatters.set(
+                zone,
+                new Intl.DateTimeFormat("ru-RU", {
+                    timeZone: zone,
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hourCycle: "h23"
+                })
+            );
+        }
+
+        return timeFormatters.get(zone);
+    }
+
+    // Форматирование даты для часового пояса.
+    function getDateFormatter(zone) {
+        if (!dateFormatters.has(zone)) {
+            dateFormatters.set(
+                zone,
+                new Intl.DateTimeFormat("ru-RU", {
+                    timeZone: zone,
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })
+            );
+        }
+
+        return dateFormatters.get(zone);
+    }
+
+    // Получаем текущее смещение относительно UTC.
+    function getUTCOffset(zone, date) {
+        const parts = new Intl.DateTimeFormat("en-US", {
+            timeZone: zone,
+            timeZoneName: "longOffset"
+        }).formatToParts(date);
+
+        const offset = parts.find(
+            part => part.type === "timeZoneName"
+        )?.value || "GMT";
+
+        return offset === "GMT"
+            ? "UTC+00:00"
+            : offset.replace("GMT", "UTC");
+    }
+
+    // Создаём карточки городов.
+    function renderCities() {
+        grid.innerHTML = "";
+
+        cities.forEach((city, index) => {
+            const card = document.createElement("article");
+
+            card.className = "city-card";
+            card.dataset.name =
+                city.name.toLocaleLowerCase("ru-RU");
+
+            card.dataset.region =
+                city.region.toLocaleLowerCase("ru-RU");
+
+            const top = document.createElement("div");
+            top.className = "city-top";
+
+            const info = document.createElement("div");
+
+            const name = document.createElement("div");
+            name.className = "city-name";
+
+            // Выделяем Воткинск и в общем списке.
+            name.textContent = city.name === "Воткинск"
+                ? "👑 " + city.name
+                : city.name;
+
+            const region = document.createElement("div");
+            region.className = "city-region";
+            region.textContent = city.region;
+
+            info.append(name, region);
+
+            const offset = document.createElement("div");
+            offset.className = "utc";
+            offset.id = `offset-${index}`;
+
+            top.append(info, offset);
+
+            const time = document.createElement("div");
+            time.className = "city-time";
+            time.id = `time-${index}`;
+            time.textContent = "--:--:--";
+
+            const date = document.createElement("div");
+            date.className = "city-date";
+            date.id = `date-${index}`;
+            date.textContent = "Загрузка даты...";
+
+            const zone = document.createElement("div");
+            zone.className = "city-zone";
+            zone.textContent = `Часовой пояс: ${city.zone}`;
+
+            card.append(top, time, date, zone);
+            grid.appendChild(card);
+        });
+
+        updateCityCount();
+    }
+
+    // Обновляем часы и даты.
+    function updateClocks() {
+        const now = new Date();
+
+        // Королевские часы Воткинска.
+        document.getElementById("votkinskTime").textContent =
+            getTimeFormatter(VOTKINSK_ZONE).format(now);
+
+        document.getElementById("votkinskDate").textContent =
+            getDateFormatter(VOTKINSK_ZONE).format(now);
+
+        document.getElementById("votkinskZone").textContent =
+            "👑 " + getUTCOffset(VOTKINSK_ZONE, now) +
+            " · Королевское время";
+
+        // Часы Москвы.
+        document.getElementById("moscowTime").textContent =
+            getTimeFormatter("Europe/Moscow").format(now);
+
+        document.getElementById("moscowDate").textContent =
+            getDateFormatter("Europe/Moscow").format(now);
+
+        // Часы всех городов.
+        cities.forEach((city, index) => {
+            document.getElementById(`time-${index}`).textContent =
+                getTimeFormatter(city.zone).format(now);
+
+            document.getElementById(`date-${index}`).textContent =
+                getDateFormatter(city.zone).format(now);
+
+            document.getElementById(`offset-${index}`).textContent =
+                getUTCOffset(city.zone, now);
+        });
+    }
+
+    // Поиск городов по названию или региону.
+    function filterCities() {
+        const query = searchInput.value
+            .trim()
+            .toLocaleLowerCase("ru-RU");
+
+        let visible = 0;
+
+        document.querySelectorAll(".city-card").forEach(card => {
+            const matches =
+                card.dataset.name.includes(query) ||
+                card.dataset.region.includes(query);
+
+            card.style.display = matches ? "" : "none";
+
+            if (matches) {
+                visible++;
+            }
+        });
+
+        let empty = document.getElementById("emptyMessage");
+
+        if (visible === 0) {
+            if (!empty) {
+                empty = document.createElement("div");
+                empty.id = "emptyMessage";
+                empty.className = "empty";
+                empty.textContent =
+                    "Город не найден. Попробуйте другое название.";
+
+                grid.appendChild(empty);
+            }
+        } else if (empty) {
+            empty.remove();
+        }
+
+        updateCityCount(visible);
+    }
+
+    function updateCityCount(count = cities.length) {
+        document.getElementById("cityCount").textContent = count;
+    }
+
+    // Запуск сайта.
+    renderCities();
+    updateClocks();
+
+    searchInput.addEventListener("input", filterCities);
+
+    // Синхронизируем обновление с началом каждой секунды.
+    function scheduleNextUpdate() {
+        const delay = 1000 - (Date.now() % 1000) + 5;
+
+        setTimeout(() => {
+            updateClocks();
+            scheduleNextUpdate();
+        }, delay);
+    }
+
+    scheduleNextUpdate();
+</script>
+
+</body>
+</html>
